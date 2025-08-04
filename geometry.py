@@ -28,37 +28,37 @@ def refract(v, n, eta):
 
 class Sphere:
     """Esfera en la escena."""
-    def __init__(self, center, radius, color, material=[1,0,0], ior=1.5):
+    def __init__(self, center, radius, color, material=[1,0,0], ior=1.5, texture_id=-1):
         self.center = np.array(center, dtype=np.float32)
         self.radius = float(radius)
         self.color = np.array(color, dtype=np.float32)
         self.material = np.array(material, dtype=np.float32)
         self.ior = ior
+        self.texture_id = texture_id
 
 
 class Plane:
     """Plano infinito en la escena."""
-    def __init__(self, point, normal, color, material=[1,0,0], ior=1.5):
+    def __init__(self, point, normal, color, material=[1,0,0], ior=1.5, texture_id=-1):
         self.point = np.array(point, dtype=np.float32)
         self.normal = np.array(normal, dtype=np.float32) / np.linalg.norm(normal)
         self.color = np.array(color, dtype=np.float32)
         self.material = np.array(material, dtype=np.float32)
         self.ior = ior
+        self.texture_id = texture_id
 
 class Triangle:
     """Triángulo en la escena."""
     def __init__(self, pt1, pt2, pt3, 
                 #  uv1, uv2, uv3,
-                color, material=[1,0,0], ior=1.5):
+                color, material=[1,0,0], ior=1.5, texture_id=-1):
         self.pt1 = np.array(pt1, dtype=np.float32)
         self.pt2 = np.array(pt2, dtype=np.float32)
         self.pt3 = np.array(pt3, dtype=np.float32)
-        # self.uv1 = np.array(uv1, dtype=np.float32)
-        # self.uv2 = np.array(uv2, dtype=np.float32)
-        # self.uv3 = np.array(uv3, dtype=np.float32)
         self.color = np.array(color, dtype=np.float32)
         self.material = np.array(material, dtype=np.float32)
         self.ior = ior
+        self.texture_id = texture_id
 
 class Camera:
     """Cámara con perspectiva configurable."""
@@ -117,3 +117,4 @@ class Scene:
         self.planes.clear()
         self.triangles.clear()
         self.lights.clear()
+

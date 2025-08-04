@@ -1,3 +1,5 @@
 *.png
 *.obj
 *.blend
+*.jpg
+__pycache__/

@@ -5,7 +5,32 @@ raytracer.py - Clase principal del Ray Tracer
 from geometry import Camera
 from gpu_renderer import GPURenderer
 from cpu_renderer import CPURenderer
+import numpy as np
 import traceback
+
+def load_texture(image_path):
+    """Carga una textura desde un archivo PNG/JPG"""
+    from PIL import Image
+    
+    try:
+        img = Image.open(image_path).convert('RGB')
+        width, height = img.size
+        
+        # Convertir a array numpy normalizado [0,1]
+        texture_data = np.array(img, dtype=np.float32) / 255.0
+        texture_data = texture_data.flatten()  # Aplanar a 1D
+        
+        texture_info = {
+            'data': texture_data,
+            'width': width,
+            'height': height
+        }
+        
+        return texture_info  # Retornar índice de la textura
+    
+    except Exception as e:
+        print(f"Error cargando textura {image_path}: {e}")
+        return -1
 
 class RayTracer:
     """Ray tracer principal con soporte GPU/CPU."""
@@ -16,8 +41,9 @@ class RayTracer:
         self.samples = samples
         self.bounces = bounces
 
-        self.gpu_renderer = GPURenderer(samples_per_pixel=samples, max_bounces=bounces)
+        self.gpu_renderer = GPURenderer(samples_per_pixel=samples, max_bounces=bounces, textures=[load_texture("./imgs/tiopaco.jpg")])
         self.cpu_renderer = CPURenderer(samples_per_pixel=samples, max_bounces=bounces)
+        # self.gpu_renderer.textures = load_texture("./imgs/tiopaco.jpg")  # Cargar textura de ejemplo
         
         self.use_gpu = prefer_gpu and self.gpu_renderer.is_available()
         

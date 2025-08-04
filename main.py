@@ -3,6 +3,7 @@ main.py - Script principal para ejecutar el Ray Tracer
 """
 
 import matplotlib.pyplot as plt
+import numpy as np
 import argparse
 import time
 from math import pi
@@ -18,17 +19,17 @@ def create_demo_scene():
     scene.add_light(Light([1.0, 1.0, 1.0], intensity=2.0))
     
     # Esferas
-    # scene.add_triangle(Triangle([-2,0,-2],[0,2,-2],[2,0,-2],[0,1.0,0]))
+    scene.add_triangle(Triangle([-2,0,-2],[0,2,-2],[2,0,-2],[0,1.0,0]))
 
-    vertex, triangles_index = load_obj_file("./cañon.obj")
-    # scaled_vertex = scale_vertex(vertex, scale_factor=(1/(50 * 16)))
-    transform = compose(translate(dy=-0.2, dz=-0.2),rotate_y(3*pi/4),scale(1/7))
-    modified_vertex = list(map(transform, vertex))
-    triangles = convert_to_triangles(modified_vertex, triangles_index, [0,1.0,0])
-    for triangle in triangles:
-        scene.add_triangle(triangle)
-    print(len(scene.triangles))
-    scene.add_sphere(Sphere([0, 0, -30], 0.5, [1.0, 0.0, 0.0]))      # Roja
+    # vertex, triangles_index = load_obj_file("./cañon.obj")
+    # # scaled_vertex = scale_vertex(vertex, scale_factor=(1/(50 * 16)))
+    # transform = compose(translate(dy=-0.2, dz=-0.2),rotate_y(3*pi/4),scale(1/7))
+    # modified_vertex = list(map(transform, vertex))
+    # triangles = convert_to_triangles(modified_vertex, triangles_index, [0,1.0,0])
+    # for triangle in triangles:
+    #     scene.add_triangle(triangle)
+    # print(len(scene.triangles))
+    scene.add_sphere(Sphere([0, 0, -30], 0.5, [1.0, 0.0, 0.0], texture_id=0))      # Roja
     # scene.add_sphere(Sphere([-1, 0, -1], 0.5, [0.0, 1.0, 0.0]))     # Verde
     # scene.add_sphere(Sphere([1, 0, -1], 0.5, [0.0, 0.0, 1.0]))      # Azul
     # scene.add_sphere(Sphere([0.3, 0.7, -0.8], 0.2, [1.0, 1.0, 0.0])) # Amarilla
@@ -44,12 +45,14 @@ def create_cornell_box():
     scene = Scene()
     
     # Luz en el techo
-    scene.add_light(Light([0.0, 1.8, -1.0], intensity=1.2))
+    # scene.add_light(Light([0.0, 1.8, -1.0], intensity=1.2))
+    scene.add_light(Light([0.0, 2, -1.0], intensity=1.2))
     
     # Esferas centrales
     scene.add_sphere(Sphere([-0.3, -0.2, -0.8], 0.3, [0.9, 0.9, 0.9]))  # Blanca
+    scene.add_sphere(Sphere([0, 0, -3], 2, [0.9, 0.9, 0.9], texture_id=0))  # Blanca
     scene.add_sphere(Sphere([0.4, -0.3, -1.2], 0.2, [0.8, 0.2, 0.2]))   # Roja
-    scene.add_triangle(Triangle([-1,0,-2],[0,1,-2],[1,0,-2],[1.0,1.0,0]))
+    scene.add_triangle(Triangle([-2,-1,-2],[0,1,-2],[2,-1,-2],[1.0,1.0,0]))
 
     # Paredes Cornell Box
     scene.add_plane(Plane([0, -0.5, 0], [0, 1, 0], [0.9, 0.9, 0.9]))    # Suelo
